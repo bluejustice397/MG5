@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
     private Animator _animator;
+    private bool teleport;
 
     // STEP 1 -----------------------------------------------------------------
     // First, we are going to make our Pudu walk to where the player clicked
@@ -15,7 +17,7 @@ public class Player : MonoBehaviour
     // Add a MEMBER VARIABLE here for the NavMeshAgent Component named _agent.
     // It does NOT need to be tunable in the Inspector.
 
-    // ??? _agent
+    private NavMeshAgent _agent;
 
     // STEP 1 -----------------------------------------------------------------
 
@@ -28,6 +30,8 @@ public class Player : MonoBehaviour
     // We need a Vector3 to keep track of their LAST KNOWN LOCATION.
     // Add a MEMBER VARIABLE here for that location.
     // It does NOT need to be tunable in the Inspector.
+
+    private Vector3 lastpos;
     
 
     // STEP 4 -----------------------------------------------------------------
@@ -47,12 +51,13 @@ public class Player : MonoBehaviour
     //      to use GetComponent to grab this GameObject's NavMeshAgent and store
     //      it in the _agent MEMBER VARIABLE.
     //
-    //private void ????()
-    //{
-    //
-    //    _mainCamera = Camera.main;
-    //    _animator = GetComponent<Animator>();
-    //}
+    private void Start()
+    {
+    
+        _mainCamera = Camera.main;
+        _animator = GetComponent<Animator>();
+       _agent = GetComponent<NavMeshAgent>();
+    }
     // STEP 2 -----------------------------------------------------------------
 
     // ------------------------------------------------------------------------
@@ -76,6 +81,7 @@ public class Player : MonoBehaviour
                 //
                 // Feature 2 should work after this step.
 
+                _agent.SetDestination(mouseHitPosition);
 
                 // STEP 3 -----------------------------------------------------
 
@@ -86,9 +92,8 @@ public class Player : MonoBehaviour
                 //      here.
                 // 
                 // You'll need this GameObject's Transform's position.
-                // See an example in the documentation: https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Transform-position.html
-
-
+                // See an example in the documentation: 
+                lastpos = transform.position;
                 // STEP 5 -----------------------------------------------------
             }
         }
@@ -105,6 +110,15 @@ public class Player : MonoBehaviour
         //      the correct one: https://docs.unity3d.com/6000.0/Documentation/ScriptReference/AI.NavMeshAgent.html
         // Feature 3 should work after this.
 
+
+        if (Input.GetKey(KeyCode.Space)) 
+        {
+
+            teleport = _agent.Warp(lastpos);
+        
+        
+        
+        }
 
         // STEP 6 -------------------------------------------------------------
 
